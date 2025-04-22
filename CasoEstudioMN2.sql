@@ -4,7 +4,7 @@ USE `casoestudiomn`;
 --
 -- Host: 127.0.0.1    Database: casoestudiomn
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.32-MariaDB
+-- Server version	5.5.5-10.4.28-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -40,7 +40,7 @@ CREATE TABLE `casassistema` (
 
 LOCK TABLES `casassistema` WRITE;
 /*!40000 ALTER TABLE `casassistema` DISABLE KEYS */;
-INSERT INTO `casassistema` VALUES (1,'Casa en San José',190000.00,NULL,NULL),(2,'Casa en Alajuela',145000.00,NULL,NULL),(3,'Casa en Cartago',115000.00,NULL,NULL),(4,'Casa en Heredia',122000.00,NULL,NULL),(5,'Casa en Guanacaste',105000.00,NULL,NULL);
+INSERT INTO `casassistema` VALUES (1,'Casa en San José',190000.00,NULL,NULL),(2,'Casa en Alajuela',145000.00,'Mario','2025-04-21 23:00:22'),(3,'Casa en Cartago',115000.00,NULL,NULL),(4,'Casa en Heredia',122000.00,NULL,NULL),(5,'Casa en Guanacaste',105000.00,NULL,NULL);
 /*!40000 ALTER TABLE `casassistema` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,7 +59,8 @@ UNLOCK TABLES;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ConsultarCasas`()
 BEGIN
-    SELECT 
+    SELECT
+		IdCasa,
         DescripcionCasa,
         PrecioCasa,
         UsuarioAlquiler,
@@ -68,7 +69,7 @@ BEGIN
             ELSE 'Reservada'
         END AS Estado,
         DATE_FORMAT(FechaAlquiler, '%d/%m/%Y') AS FechaAlquiler
-    FROM Casassistema
+    FROM casassistema
     WHERE PrecioCasa BETWEEN 115000 AND 180000
     ORDER BY 
         CASE 
@@ -115,6 +116,31 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `SP_ActualizarCasa` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_ActualizarCasa`(
+    pIdCasa BIGINT(11),
+    pUsuario varchar(30)
+)
+BEGIN
+    UPDATE casassistema
+	SET UsuarioAlquiler = pUsuario,
+    FechaAlquiler = now()
+	WHERE IdCasa = pIdCasa;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `SP_ConsultarCasas` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -128,6 +154,7 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_ConsultarCasas`()
 BEGIN
     SELECT 
+        IdCasa, 
         DescripcionCasa,
         PrecioCasa,
         UsuarioAlquiler,
@@ -136,7 +163,7 @@ BEGIN
             ELSE 'Reservada'
         END AS Estado,
         DATE_FORMAT(FechaAlquiler, '%d/%m/%Y') AS FechaAlquiler
-    FROM Casassistema
+    FROM casassistema
     WHERE PrecioCasa BETWEEN 115000 AND 180000
     ORDER BY 
         CASE 
@@ -159,4 +186,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-17 20:21:27
+-- Dump completed on 2025-04-21 23:07:11

@@ -16,4 +16,21 @@ function ConsultarCasasModel()
         return null;
     }        
 }
+
+function ActualizarCasaModel($idCasa, $usuario)
+{
+    try
+    {
+        $context = AbrirBaseDatos();
+        $sentencia = "CALL SP_ActualizarCasa('$idCasa', '$usuario')";
+        $resultado = $context->query($sentencia);
+        CerrarBaseDatos($context);
+        return $resultado;
+    }
+    catch(Exception $error)
+    {
+        return null;
+    }        
+}
+
 ?>

@@ -44,7 +44,7 @@ function PrintMenu()
                         <a href="/CasoEstudio2/View/Consulta/ConsultaCasas.php" class="nav-link smoothScroll">Consulta Casas</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#class" class="nav-link smoothScroll">Alquiler Casas</a>
+                        <a href="/CasoEstudio2/View/Alquiler/AlquilerCasas.php" class="nav-link smoothScroll">Alquiler Casas</a>
                     </li>
                 </ul>
             </div>
